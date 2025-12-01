@@ -23,6 +23,7 @@ Select instance → Connect
 
 B. Connect via SSH (powershell - run as admin)
 cd <path-to-pem>
+
 ssh -i key.pem ubuntu@<Public-IP>
 
 C. Install Required Software
