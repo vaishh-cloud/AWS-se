@@ -1,0 +1,103 @@
+1️⃣ Deployment of index.html using EC2 (Docker + Nginx) A. Launch EC2
+
+Login → AWS Academy → Start Lab
+
+EC2 → Launch Instance
+
+AMI: Ubuntu (Free tier)
+
+Arch: 64-bit
+
+Instance: t2.micro
+
+Key pair: Create new (.pem) → save
+
+Network: Allow HTTP & HTTPS
+
+Storage: 8 GB
+
+Launch → Wait for 2/2 checks
+
+Select instance → Connect
+
+B. Connect via SSH (powershell - run as admin) cd
+
+ssh -i key.pem ubuntu@
+
+C. Install Required Software sudo apt update sudo apt install docker.io -y sudo apt install git -y sudo apt install nano -y
+
+D. Create & Push index.html (Local System) git init git add . git commit -m "first commit" git branch -M main git remote add origin git push -u origin main
+
+E. Clone Repo on EC2 git clone cd
+
+F. Create Dockerfile nano Dockerfile
+
+Paste:
+
+FROM nginx COPY index.html /usr/share/nginx/html
+
+Save → Ctrl+O Enter → Ctrl+X
+
+G. Build & Run Docker sudo docker build -t mywebapp . sudo docker run -d -p 80:80 mywebapp
+
+H. Access Application
+
+Copy Public IPv4
+
+Browser:
+
+http://
+
+I. Stop & Cleanup sudo docker ps sudo docker stop
+
+EC2 → Terminate Instance
+
+AWS Academy → End Lab
+
+2️⃣ Maven Web Project Deployment in AWS A. Launch EC2
+
+Start Lab → EC2 → Launch Instance
+
+Ubuntu + t2.micro
+
+Create key pair
+
+Allow all inbound
+
+Wait for 2/2 checks
+
+Connect → SSH
+
+B. Connect & Install sudo apt update sudo apt install docker.io -y sudo apt install git -y
+
+C. Clone Maven Project git clone cd
+
+D. If Branch Issue git branch -M main
+
+(or set default branch in GitHub → Settings)
+
+E. Build Docker Image sudo docker build -t mavenapp .
+
+F. Run Container sudo docker run -d -p 9090:8080 mavenapp
+
+G. Open Port (If Not Loading)
+
+EC2 → Security Groups → Edit Inbound Rules
+
+Custom TCP | Port 9090 | 0.0.0.0/0
+
+H. Access App http://:9090
+
+I. Stop & Terminate sudo docker ps sudo docker stop
+
+Terminate EC2
+
+End Lab
+
+✅ REMEMBER
+
+Use HTTP, not HTTPS
+
+Always terminate instance
+
+Always end lab
