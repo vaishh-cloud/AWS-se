@@ -102,3 +102,71 @@ Apply & Save
 5. Run & Verify
 In pipeline view → click RUN on the pipeline
 After pipeline completes, open Tomcat manager → visit https://localhost:8085/ → click /webpath to view deployed app
+
+
+===================================================
+
+🧩 Step-by-Step Pipeline Creation (UI)
+Step 1: Open Jenkins
+http://localhost:8080
+Step 2: Create New Pipeline Job
+Click New Item
+Enter name → Scripted_Maven_Pipeline
+Select Pipeline
+Click OK
+Step 3: General Section
+Description
+Scripted Jenkins Pipeline for Maven Project
+Step 4: Build Triggers (choose any)
+✅ Common options:
+☑ GitHub hook trigger for GITScm polling
+☑ Poll SCM
+☑ Build periodically
+(Exam tip: mention at least one trigger)
+Step 5: Advanced Project Options
+Definition → ✅ Pipeline script
+🧠 Pipeline Script (PASTE AS-IS)
+pipeline {
+    agent any
+
+    tools {
+        jdk 'JAVA_HOME'
+        maven 'MAVEN_HOME'
+    }
+
+    stages {
+
+        stage('git repo & clean') {
+            steps {
+                bat "rmdir /s /q Harshitha_Jenkins_Maven || exit 0"
+                bat "git clone https://github.com/Harshitha-Macha/Harshitha_Jenkins_Maven.git"
+                bat "mvn clean -f Harshitha_Jenkins_Maven/pom.xml"
+            }
+        }
+
+        stage('install') {
+            steps {
+                bat "mvn install -f Harshitha_Jenkins_Maven/pom.xml"
+            }
+        }
+
+        stage('test') {
+            steps {
+                bat "mvn test -f Harshitha_Jenkins_Maven/pom.xml"
+            }
+        }
+
+        stage('package') {
+            steps {
+                bat "mvn package -f Harshitha_Jenkins_Maven/pom.xml"
+            }
+        }
+    }
+}
+
+Step 6: Apply & Save
+✔ Click Apply
+✔ Click Save
+▶️ Step 7: Run the Pipeline
+Click Build Now
+Watch Console Output
