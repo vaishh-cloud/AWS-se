@@ -170,3 +170,96 @@ Step 6: Apply & Save
 ▶️ Step 7: Run the Pipeline
 Click Build Now
 Watch Console Output
+
+
+
+====================================================
+🔹 PART 1: GitHub Webhook with Jenkins
+✅ STEP 1: Expose Jenkins using ngrok
+1️⃣ Download ngrok
+https://ngrok.com/download
+Extract ngrok.exe
+2️⃣ (Optional but recommended) Add Auth Token
+ngrok config add-authtoken <your_auth_token>
+3️⃣ Start ngrok for Jenkins (Port 8080)
+ngrok http 8080
+✅ Copy the HTTPS URL shown:
+https://xxxxx.ngrok-free.dev
+✅ STEP 2: Configure GitHub Webhook
+Open GitHub Repository
+Go to Settings → Webhooks
+Click Add webhook
+Fill details:
+Payload URL
+https://xxxxx.ngrok-free.dev/github-webhook/
+Content type
+application/json
+Events
+Just the push event
+Click Add webhook
+✅ Green tick = webhook working
+✅ STEP 3: Configure Jenkins Job
+Open Jenkins Dashboard
+Select your Freestyle / Pipeline Job
+Click Configure
+Go to Build Triggers
+✅ Check:
+GitHub hook trigger for GITScm polling
+Save
+✅ STEP 4: Test Webhook
+git add .
+git commit -m "webhook test"
+git push origin main
+✅ Jenkins build starts automatically
+✅ Outcome
+GitHub & Jenkins connected
+Every push → auto Jenkins build
+===========================================
+✅ PART 2: Jenkins Email Notification Setup (Gmail)
+✅ STEP 1: Create Gmail App Password
+1️⃣ Enable 2-Step Verification
+https://myaccount.google.com
+Security → 2-Step Verification → ON
+2️⃣ Generate App Password
+Security → App passwords
+App: Other
+Name: Jenkins-Demo
+Copy 16-digit password
+✅ STEP 2: Install Jenkins Plugin
+Jenkins Dashboard
+Manage Jenkins → Manage Plugins
+Install:
+Email Extension Plugin
+✅ STEP 3: Configure Jenkins Email (Global)
+Go to:
+Manage Jenkins → Configure System
+A️⃣ Email Notification Section
+Field	Value
+SMTP Server	smtp.gmail.com
+Use SMTP Auth	✅
+Username	your_email@gmail.com
+Password	16-digit app password
+Use SSL	✅
+SMTP Port	465
+Reply-To	your_email@gmail.com
+✅ Click Test configuration
+B️⃣ Extended Email Notification
+Field	Value
+SMTP Server	smtp.gmail.com
+Port	465
+Use SSL	✅
+Credentials	Gmail + App Password
+Content Type	text/html
+Triggers	Failure / Success
+✅ STEP 4: Configure Job Email Notification
+Jenkins → Select Job → Configure
+Post-Build Actions
+Add:
+Editable Email Notification
+Fill:
+Field	Value
+Recipients	email@gmail.com
+Content Type	text/plain / html
+Triggers	Failure / Success
+Attachments	(optional)
+Save
